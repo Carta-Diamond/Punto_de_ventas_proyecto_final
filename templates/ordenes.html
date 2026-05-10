@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ordenes</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <div class="contenedor">
+
+        <!-- MENU LATERAL -->
+        <aside class="sidebar">
+            <h2>PuntoVenta</h2>
+            <ul>
+                <li><a href="{{ url_for('index') }}">Inicio</a></li>
+                <li><a href="{{ url_for('vista_clientes') }}">Clientes</a></li>
+                <li><a href="{{ url_for('vista_ordenes') }}" class="active">Ordenes</a></li>
+                <li><a href="{{ url_for('vista_pagos') }}">Pagos</a></li>
+                <li><a href="{{ url_for('vista_productos') }}">Productos</a></li>
+                <li><a href="{{ url_for('vista_reportes') }}">Reportes</a></li>
+                <li><a href="{{ url_for('vista_usuarios') }}">Usuarios</a></li>
+            </ul>
+        </aside>
+
+        <!-- CONTENIDO -->
+        <main class="contenido">
+
+            <header class="header">
+                <h1>Ordenes</h1>
+            </header>
+
+            <!-- TABLA -->
+            <section class="tabla-section">
+                <h2>Lista de ordenes</h2>
+                <table id="tablaOrdenes">
+                    <thead>
+                        <tr>
+                            <th># Orden</th>
+                            <th>Cliente</th>
+                            <th>Vendedor</th>
+                            <th>Total</th>
+                            <th>Fecha</th>
+                            <th>Detalle</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for orden in ordenes %}
+                        <tr>
+                            <td>{{ orden.id }}</td>
+                            <td>{{ orden.cliente }}</td>
+                            <td>{{ orden.vendedor }}</td>
+                            <td>${{ orden.total }}</td>
+                            <td>{{ orden.created_at }}</td>
+                            <td>
+                                <a href="{{ url_for('vista_detalle_orden', id=orden.id) }}" class="btn-ver">
+                                    Ver detalle
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </section>
+
+        </main>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <div class="contenedor">
+
+        <!-- MENU LATERAL -->
+        <aside class="sidebar">
+            <h2>PuntoVenta</h2>
+            <ul>
+                <li><a href="{{ url_for('index') }}">Inicio</a></li>
+                <li><a href="{{ url_for('vista_clientes') }}">Clientes</a></li>
+                <li><a href="{{ url_for('vista_ordenes') }}">Ordenes</a></li>
+                <li><a href="{{ url_for('vista_pagos') }}" class="active">Pagos</a></li>
+                <li><a href="{{ url_for('vista_productos') }}">Productos</a></li>
+                <li><a href="{{ url_for('vista_reportes') }}">Reportes</a></li>
+                <li><a href="{{ url_for('vista_usuarios') }}">Usuarios</a></li>
+            </ul>
+        </aside>
+
+        <!-- CONTENIDO -->
+        <main class="contenido">
+
+            <header class="header">
+                <h1>Pagos</h1>
+            </header>
+
+            <!-- TABLA -->
+            <section class="tabla-section">
+                <h2>Lista de pagos</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th># Orden</th>
+                            <th>Cliente</th>
+                            <th>Monto</th>
+                            <th>Método</th>
+                            <th>Fecha</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for pago in pagos %}
+                        <tr>
+                            <td>{{ pago.id }}</td>
+                            <td>{{ pago.orden_id }}</td>
+                            <td>{{ pago.cliente }}</td>
+                            <td>${{ pago.monto }}</td>
+                            <td>{{ pago.metodo_pago }}</td>
+                            <td>{{ pago.created_at }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </section>
+
+        </main>
+    </div>
+
+</body>
+</html>

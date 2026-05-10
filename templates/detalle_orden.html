@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle Orden</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <div class="contenedor">
+
+        <!-- MENU LATERAL -->
+        <aside class="sidebar">
+            <h2>PuntoVenta</h2>
+            <ul>
+                <li><a href="{{ url_for('index') }}">Inicio</a></li>
+                <li><a href="{{ url_for('vista_clientes') }}">Clientes</a></li>
+                <li><a href="{{ url_for('vista_ordenes') }}" class="active">Ordenes</a></li>
+                <li><a href="{{ url_for('vista_pagos') }}">Pagos</a></li>
+                <li><a href="{{ url_for('vista_productos') }}">Productos</a></li>
+                <li><a href="{{ url_for('vista_reportes') }}">Reportes</a></li>
+                <li><a href="{{ url_for('vista_usuarios') }}">Usuarios</a></li>
+            </ul>
+        </aside>
+
+        <!-- CONTENIDO -->
+        <main class="contenido">
+
+            <header class="header">
+                <h1>Detalle Orden #{{ orden.id }}</h1>
+                <a href="{{ url_for('vista_ordenes') }}" class="btn-volver">← Volver</a>
+            </header>
+
+            <!-- INFO ORDEN -->
+            <section class="tabla-section">
+                <h2>Información general</h2>
+                <table>
+                    <tbody>
+                        <tr><td><strong>Cliente</strong></td><td>{{ orden.cliente }}</td></tr>
+                        <tr><td><strong>Vendedor</strong></td><td>{{ orden.vendedor }}</td></tr>
+                        <tr><td><strong>Fecha</strong></td><td>{{ orden.created_at }}</td></tr>
+                        <tr><td><strong>Total</strong></td><td>${{ orden.total }}</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- PRODUCTOS DE LA ORDEN -->
+            <section class="tabla-section">
+                <h2>Productos</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Cantidad</th>
+                            <th>Precio unitario</th>
+                            <th>Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in detalle %}
+                        <tr>
+                            <td>{{ item.nombre }}</td>
+                            <td>{{ item.cantidad }}</td>
+                            <td>${{ item.precio }}</td>
+                            <td>${{ item.subtotal }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </section>
+
+        </main>
+    </div>
+
+</body>
+</html>

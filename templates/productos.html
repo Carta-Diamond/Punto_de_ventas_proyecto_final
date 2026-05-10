@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <div class="contenedor">
+
+        <!-- MENU LATERAL -->
+        <aside class="sidebar">
+            <h2>PuntoVenta</h2>
+            <ul>
+                <li><a href="{{ url_for('index') }}">Inicio</a></li>
+                <li><a href="{{ url_for('vista_clientes') }}">Clientes</a></li>
+                <li><a href="{{ url_for('vista_ordenes') }}">Ordenes</a></li>
+                <li><a href="{{ url_for('vista_pagos') }}">Pagos</a></li>
+                <li><a href="{{ url_for('vista_productos') }}" class="active">Productos</a></li>
+                <li><a href="{{ url_for('vista_reportes') }}">Reportes</a></li>
+                <li><a href="{{ url_for('vista_usuarios') }}">Usuarios</a></li>
+            </ul>
+        </aside>
+
+        <!-- CONTENIDO -->
+        <main class="contenido">
+
+            <header class="header">
+                <h1>Productos</h1>
+            </header>
+
+            <!-- FILTROS -->
+            <div class="filtros">
+                <input type="text" id="buscador" placeholder="Buscar por nombre...">
+                <select id="filtroCategoria">
+                    <option value="">Todas las categorías</option>
+                    {% for categoria in categorias %}
+                    <option value="{{ categoria.nombre }}">{{ categoria.nombre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- TABLA -->
+            <section class="tabla-section">
+                <h2>Lista de productos</h2>
+                <table id="tablaProductos">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Descripción</th>
+                            <th>Categoría</th>
+                            <th>Precio</th>
+                            <th>Oferta</th>
+                            <th>Stock</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for producto in productos %}
+                        <tr>
+                            <td>{{ producto.id }}</td>
+                            <td>{{ producto.nombre }}</td>
+                            <td>{{ producto.descripcion }}</td>
+                            <td>{{ producto.categoria }}</td>
+                            <td>${{ producto.precio }}</td>
+                            <td>{{ '$' + producto.precio_oferta|string if producto.precio_oferta else '-' }}</td>
+                            <td>{{ producto.stock }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </section>
+
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/productos.js') }}"></script>
+
+</body>
+</html>

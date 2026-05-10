@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Punto de Ventas</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <div class="contenedor">
+
+        <!-- MENU LATERAL -->
+        <aside class="sidebar">
+            <h2>PuntoVenta</h2>
+            <ul>
+                <li><a href="{{ url_for('vista_clientes') }}">Clientes</a></li>
+                <li><a href="{{ url_for('vista_ordenes') }}">Ordenes</a></li>
+                <li><a href="{{ url_for('vista_pagos') }}">Pagos</a></li>
+                <li><a href="{{ url_for('vista_productos') }}">Productos</a></li>
+                <li><a href="{{ url_for('vista_reportes') }}">Reportes</a></li>
+                <li><a href="{{ url_for('vista_usuarios') }}">Usuarios</a></li>
+            </ul>
+        </aside>
+
+        <!-- CONTENIDO -->
+        <main class="contenido">
+
+            <!-- HEADER -->
+            <header class="header">
+                <h1>Sistema Punto de Venta</h1>
+            </header>
+
+            <!-- TARJETAS -->
+            <section class="tarjetas">
+                <div class="card">
+                    <h3>Total Productos</h3>
+                    <p>{{ total_productos }}</p>
+                </div>
+                <div class="card">
+                    <h3>Total Clientes</h3>
+                    <p>{{ total_clientes }}</p>
+                </div>
+                <div class="card">
+                    <h3>Total Ordenes</h3>
+                    <p>{{ total_ordenes }}</p>
+                </div>
+            </section>
+
+            <!-- TABLA ÚLTIMAS ÓRDENES -->
+            <section class="tabla-section">
+                <h2>Últimas órdenes</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th># Orden</th>
+                            <th>Cliente</th>
+                            <th>Vendedor</th>
+                            <th>Total</th>
+                            <th>Fecha</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for orden in ordenes %}
+                        <tr>
+                            <td>{{ orden.id }}</td>
+                            <td>{{ orden.cliente }}</td>
+                            <td>{{ orden.vendedor }}</td>
+                            <td>${{ orden.total }}</td>
+                            <td>{{ orden.created_at }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </section>
+
+        </main>
+    </div>
+
+</body>
+</html>
