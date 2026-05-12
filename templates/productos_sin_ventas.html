@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos sin ventas</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <div class="contenedor">
+        <!-- MENU LATERAL -->
+        <aside class="sidebar">
+            <h2>PuntoVenta</h2>
+            <ul>
+                <li><a href="{{ url_for('index') }}">Inicio</a></li>
+                <li><a href="{{ url_for('vista_clientes') }}">Clientes</a></li>
+                <li><a href="{{ url_for('vista_ordenes') }}">Ordenes</a></li>
+                <li><a href="{{ url_for('vista_pagos') }}">Pagos</a></li>
+                <li><a href="{{ url_for('vista_productos') }}">Productos</a></li>
+                <li><a href="{{ url_for('vista_reportes') }}">Reportes</a></li>
+                <li><a href="{{ url_for('vista_usuarios') }}">Usuarios</a></li>
+            </ul>
+        </aside>
+
+        <!-- CONTENIDO -->
+        <main class="contenido">
+            <header class="header">
+                <h1>Productos sin ventas</h1>
+                <a href="{{ url_for('vista_productos') }}" class="btn-volver">← Volver a productos</a>
+            </header>
+
+            <!-- Tarjeta resumen -->
+            <div class="tarjetas">
+                <div class="card">
+                    <h3>Productos sin ventas</h3>
+                    <p>{{ total_sin_ventas }}</p>
+                </div>
+            </div>
+
+            <!-- TABLA -->
+            <section class="tabla-section">
+                <h2>Productos que nunca se han vendido</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Categoría</th>
+                            <th>Precio</th>
+                            <th>Stock</th>
+                            <th>Descripción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for producto in productos %}
+                        <tr>
+                            <td>{{ producto.id }}</td>
+                            <td>{{ producto.nombre }}</td>
+                            <td>{{ producto.categoria }}</td>
+                            <td>${{ producto.precio }}</td>
+                            <td>{{ producto.stock }}</td>
+                            <td>{{ producto.descripcion or '-' }}</td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="6" style="text-align: center;">
+                                ¡Todos los productos han sido vendidos al menos una vez!
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </section>
+
+
+        </main>
+    </div>
+
+</body>
+</html>

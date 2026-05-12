@@ -73,7 +73,7 @@ class Orden:
         return rows
 
 
-       
+    @staticmethod
     def get_log_stock():
         connection = get_connection()
         cursor = connection.cursor(pymysql.cursors.DictCursor)
@@ -108,7 +108,7 @@ class Orden:
             FROM orden_productos
         )
         GROUP BY p.id, p.nombre
-        HAVING total_vendidos > 0
+        HAVING total_vendidos > 10
         ORDER BY total_vendidos DESC
     """)
 

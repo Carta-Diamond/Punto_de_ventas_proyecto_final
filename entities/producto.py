@@ -164,6 +164,31 @@ class Producto:
         cursor.close()
         connection.close()
 
+    # En entities/producto.py - agregar este método
+
+    @staticmethod
+    def get_productos_nunca_vendidos():
+
+        connection = get_connection()
+        cursor = connection.cursor(pymysql.cursors.DictCursor)
+        
+        cursor.execute("""
+            SELECT p.id, p.nombre, p.descripcion, p.precio, p.stock,
+                c.nombre AS categoria
+            FROM productos p
+            JOIN categorias c ON p.categoria_id = c.id
+            WHERE p.id NOT IN (
+                SELECT DISTINCT producto_id 
+                FROM orden_productos
+            )
+            ORDER BY p.nombre
+        """)
+        
+        rows = cursor.fetchall()
+        cursor.close()
+        connection.close()
+        return rows
+
     # ── Eliminar ──────────────────────────────────────────────
     def delete(self):
         connection = get_connection()
