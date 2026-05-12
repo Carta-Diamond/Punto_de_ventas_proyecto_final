@@ -166,3 +166,17 @@ BEGIN
 END$$
 
 DELIMITER ;
+
+-- VIEW: resumen de órdenes con cliente y vendedor
+CREATE OR REPLACE VIEW vista_ordenes_detalle AS
+SELECT o.id,
+       o.created_at,
+       o.total,
+       c.nombre        AS cliente,
+       u.nombre        AS vendedor,
+       COUNT(op.producto_id) AS num_productos
+FROM ordenes o
+JOIN clientes      c  ON o.cliente_id  = c.id
+JOIN usuarios      u  ON o.usuario_id  = u.id
+JOIN orden_productos op ON o.id        = op.orden_id
+GROUP BY o.id, o.created_at, o.total, cliente, vendedor;

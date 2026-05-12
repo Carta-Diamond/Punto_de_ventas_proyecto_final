@@ -72,6 +72,25 @@ class Orden:
         connection.close()
         return rows
 
+
+       
+    def get_log_stock():
+        connection = get_connection()
+        cursor = connection.cursor(pymysql.cursors.DictCursor)
+
+        cursor.execute("""
+            SELECT l.id, l.stock_antes, l.stock_nuevo, l.fecha,
+                p.nombre AS producto
+            FROM log_stock l
+            JOIN productos p ON l.producto_id = p.id
+            ORDER BY l.fecha DESC
+        """)
+
+        rows = cursor.fetchall()
+        cursor.close()
+        connection.close()
+        return rows
+
     # ── Reporte: productos más vendidos (GROUP BY + HAVING) ───
     @staticmethod
     def reporte_mas_vendidos():
@@ -79,15 +98,33 @@ class Orden:
         cursor = connection.cursor(pymysql.cursors.DictCursor)
 
         cursor.execute("""
-            SELECT p.nombre,
-                   SUM(op.cantidad) AS total_vendidos,
-                   SUM(op.cantidad * op.precio) AS ingresos
-            FROM orden_productos op
-            JOIN productos p ON op.producto_id = p.id
-            GROUP BY p.id, p.nombre
-            HAVING total_vendidos > 0
-            ORDER BY total_vendidos DESC
-        """)
+        SELECT p.nombre,
+               SUM(op.cantidad)             AS total_vendidos,
+               SUM(op.cantidad * op.precio) AS ingresos
+        FROM orden_productos op
+        JOIN productos p ON op.producto_id = p.id
+        WHERE op.producto_id IN (
+            SELECT DISTINCT producto_id
+            FROM orden_productos
+        )
+        GROUP BY p.id, p.nombre
+        HAVING total_vendidos > 0
+        ORDER BY total_vendidos DESC
+    """)
+
+        rows = cursor.fetchall()
+        cursor.close()
+        connection.close()
+        return rows
+
+    @staticmethod
+    def get_from_view():
+        connection = get_connection()
+        cursor = connection.cursor(pymysql.cursors.DictCursor)
+
+        cursor.execute(
+            "SELECT * FROM vista_ordenes_detalle ORDER BY created_at DESC"
+        )
 
         rows = cursor.fetchall()
         cursor.close()
@@ -136,3 +173,4 @@ class Orden:
         connection.commit()
         cursor.close()
         connection.close()
+
