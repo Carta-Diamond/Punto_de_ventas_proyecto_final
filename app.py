@@ -76,8 +76,6 @@ def vista_reportes():
 
 @app.route('/productos/sin-ventas')
 def productos_sin_ventas():
-    """Muestra productos que nunca se han vendido"""
-    # Si pusiste el método en producto.py:
     productos = Producto.get_productos_nunca_vendidos()
     
     return render_template('productos_sin_ventas.html',
